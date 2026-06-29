@@ -1,81 +1,78 @@
-# Let's Encode — animated logo package
+# Let's Encode!
 
-A self-contained animated version of the "Let's Encode" logo. Three hands animate
-in a subtle, cascading sequence:
+> Crowd-encoding the world's music scores, one note at a time.
 
-1. **Orange hand** twiddles the apostrophe (slight rotation + faint pinch).
-2. **Blue hand** boops the music note (small diagonal dip).
-3. **Green hand** pops the thumbs-up (small scale).
+**Let's Encode!** is a citizen-science project for crowd-based encoding and
+validation of music scores in the [MEI](https://music-encoding.org) (Music
+Encoding Initiative) format. It builds infrastructure around
+[mei-friend](https://mei-friend.mdw.ac.at), a free, browser-based music encoding
+editor, so that anyone can help turn sheet music into rich, machine-readable
+encodings — no specialist training required.
 
-Each hand starts as the previous one reaches its midpoint, so the motion flows
-continuously and finishes in just under one second, settling exactly on the
-static logo. The sequence then replays automatically at a random interval
-between 8 and 16 seconds.
+This repository contains the project's landing page, served at
+**[letsenco.de](https://letsenco.de)**.
 
-## Files
+## About the project
 
-- `lets-encode-logo.svg` — the logo with its animation CSS built in. Animations
-  are gated behind a `.play` class on the root `<svg id="svg1">`, so they only
-  run when triggered by the accompanying script.
-- `lets-encode-logo.js` — finds the inlined SVG, plays the sequence once, then
-  replays it on a random 8–16s loop. Respects `prefers-reduced-motion` (stays
-  static if the user prefers reduced motion) and pauses while the tab is hidden.
-- `example.html` — a minimal working integration.
+Digital scores are essential to both performance and musicology, but standard
+PDFs and scans can't easily be processed by computers: the musical *semantics*
+stay hidden from machines. Let's Encode! lowers the barrier to encoding that
+meaning by hand, as a crowd:
 
-## How to use
+- **Free and open source** — no fees; our software is openly licensed, and
+  contributors choose how their encodings are shared (open, reuse-friendly
+  licences recommended).
+- **Nothing to install** — the tools run entirely in the browser, on whatever
+  device you already have.
+- **User-directed campaigns** — contributors can *start and manage* their own
+  encoding campaigns from the browser, not just take part in someone else's.
 
-The SVG must be **inlined** into the page so the script can toggle its `.play`
-class. An `<img src="...svg">` or CSS `background-image` will display the logo
-but cannot animate it.
+### Goals
 
-1. Paste the contents of `lets-encode-logo.svg` directly into your HTML where the
-   logo should appear (e.g. inside a sized container).
-2. Include the script: `<script src="lets-encode-logo.js" defer></script>`.
-3. Size the logo by sizing its container; the SVG scales to fit.
+Early collaborations explore making semantic music-encoding accessible to
+diverse communities:
 
-The script auto-initialises on DOM ready for the default `#svg1`. If your
-framework inlines the SVG later (e.g. after a fetch), call
-`window.initLetsEncodeLogo(svgElement)` once the SVG is in the DOM.
+- **Chamber orchestras** encoding performance scores of public-domain works.
+- **Music societies** preserving cultural heritage — lute-music archives,
+  klezmer collections, and the work of underrepresented composers.
+- **RISM users** creating melodic incipits for the Répertoire International des
+  Sources Musicales.
 
-## Notes & constraints
+## Team
 
-- The animation lives entirely in the SVG's internal `<style>` block; the JS only
-  toggles the `.play` class to start/restart it.
-- The "pinch" on the orange hand is a subtle faked squash — the hand artwork is a
-  single path, so it is not an articulated thumb-to-finger pinch.
-- The static (non-playing) logo is pixel-identical to the original source artwork.
+- **David M. Weigl** (P.I.) — Department of Music Acoustics – Wiener Klangstil
+  (IWK), mdw
+- **Julia Jaklin** — project team, mdw
+- PhD researcher — starting April 2027
 
----
+**Project partners:** Dagmar Abfalter (Cultural Management & Gender Studies,
+mdw), Michael Staudinger (University Library, mdw), Werner Goebl (IWK, mdw).
 
-## Prompt for Claude Code
+**Advisory board:** Anna E. Kijas (Tufts University), Christina Crowder & Clara
+Byom (Klezmer Institute), David Lewis (Oxford e-Research Centre & Goldsmiths),
+Laurent Pugin (RISM Digital Center).
 
-Copy the text below to hand this package to Claude Code:
+## Funding
 
-> I'm adding an animated logo to a project website. This package contains:
->
-> - `lets-encode-logo.svg` — the logo with built-in CSS animations, gated behind
->   a `.play` class on the root `<svg id="svg1">`.
-> - `lets-encode-logo.js` — plays the animation once, then replays it on a random
->   8–16 second loop; respects `prefers-reduced-motion` and pauses on hidden tabs.
-> - `example.html` — a reference integration.
->
-> Please integrate the logo into the site as a featured element (e.g. the hero or
-> header). Requirements:
->
-> 1. Inline the SVG into the markup (do NOT use `<img>` or a CSS background — the
->    animation needs the SVG in the DOM so the script can toggle its `.play`
->    class). Match the project's component conventions (if it's React/Vue/etc.,
->    create an appropriate component; if it's static HTML, inline it directly).
-> 2. Wire up `lets-encode-logo.js` so it initialises after the SVG is in the DOM.
->    If the framework renders the SVG asynchronously, call
->    `window.initLetsEncodeLogo(svgEl)` with the mounted element instead of
->    relying on the auto-init.
-> 3. Make the logo responsive: size it via its container so it scales cleanly on
->    mobile and desktop. Keep its aspect ratio.
-> 4. Ensure it degrades gracefully: the static logo must render correctly with JS
->    disabled and when `prefers-reduced-motion` is set.
-> 5. Don't alter the animation timing or the artwork. If you need to restyle, do it
->    through the surrounding layout, not by editing the SVG's internal CSS.
->
-> Tell me where you placed it and how to adjust its size, and flag anything about
-> the project's setup that affects how the SVG should be inlined.
+Funded by the Austrian Science Fund (FWF), project number
+[PAT 2277625](https://doi.org/10.55776/PAT2277625), running May 2026 – 2030.
+
+## Repository layout
+
+| File / folder            | Purpose                                              |
+| ------------------------ | ---------------------------------------------------- |
+| `index.html`             | The single-page site.                                |
+| `styles.css`             | All styling.                                         |
+| `lets-encode-logo.js`    | Driver for the inline animated logo in the hero.     |
+| `assets/`                | Favicons and institution logos.                      |
+| `favicon-preview.html`   | Dev helper for previewing favicons.                  |
+| `CNAME`                  | Custom domain for GitHub Pages (`letsenco.de`).      |
+
+The site is static — open `index.html` in a browser, or serve the directory with
+any static file server. It deploys via GitHub Pages.
+
+## Links
+
+- Project page — <https://iwk.mdw.ac.at/lets-encode>
+- mei-friend editor — <https://mei-friend.mdw.ac.at>
+- Imprint — <https://iwk.mdw.ac.at/impressum/>
