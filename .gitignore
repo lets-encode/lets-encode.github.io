@@ -1,0 +1,13 @@
+# macOS
+.DS_Store
+
+# Archives / exports
+*.zip
+
+# Local backups / scratch
+bak/
+
+# Logo-integration leftovers (the logo is inlined directly in index.html;
+# the active animation driver lets-encode-logo.js is NOT cruft and is tracked)
+example.html
+lets-encode-logo.svg

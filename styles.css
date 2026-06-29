@@ -1,0 +1,247 @@
+/* =========================================================================
+   Let's Encode! — landing page styles
+   Palette derived from the logo's three hands:
+     orange #ffa76d   blue #6dc3ff   green #76de76
+   ========================================================================= */
+
+:root {
+  --orange: #ffa76d;
+  --blue:   #6dc3ff;
+  --green:  #76de76;
+
+  --ink:        #1f2433;
+  --ink-soft:   #4a5167;
+  --ink-faint:  #79809a;
+  --line:       #e6e8f0;
+  --bg:         #ffffff;
+  --bg-alt:     #f7f8fb;
+  --bg-tint:    #eef6ff;
+
+  --accent:       #2563c9;
+  --accent-dark:  #1b49a0;
+
+  --maxw: 1080px;
+  --radius: 14px;
+  --shadow: 0 1px 2px rgba(31, 36, 51, .06), 0 8px 28px rgba(31, 36, 51, .07);
+
+  --font: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  font-family: var(--font);
+  color: var(--ink);
+  background: var(--bg);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 { line-height: 1.2; color: var(--ink); }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+.wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 1.25rem; }
+
+/* ---- Skip link (a11y) -------------------------------------------------- */
+.skip-link {
+  position: absolute; left: -999px; top: 0;
+  background: var(--ink); color: #fff; padding: .6rem 1rem; z-index: 100;
+  border-radius: 0 0 8px 0;
+}
+.skip-link:focus { left: 0; }
+
+/* ---- Top bar ----------------------------------------------------------- */
+.topbar {
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(255, 255, 255, .9);
+  backdrop-filter: saturate(180%) blur(8px);
+  border-bottom: 1px solid var(--line);
+}
+.topbar .wrap {
+  display: flex; align-items: center; justify-content: space-between;
+  min-height: 60px; gap: 1rem;
+}
+.brand { font-weight: 700; letter-spacing: -.01em; color: var(--ink); }
+.brand:hover { color: var(--accent); text-decoration: none; }
+.nav { display: flex; gap: 1.25rem; flex-wrap: wrap; }
+.nav a { color: var(--ink-soft); font-size: .95rem; }
+.nav a:hover { color: var(--accent); text-decoration: none; }
+
+/* ---- Hero -------------------------------------------------------------- */
+.hero {
+  background:
+    radial-gradient(60% 90% at 15% 0%,  rgba(109,195,255,.18), transparent 60%),
+    radial-gradient(60% 90% at 85% 10%, rgba(118,222,118,.18), transparent 60%),
+    radial-gradient(50% 80% at 50% 100%, rgba(255,167,109,.16), transparent 60%),
+    var(--bg-alt);
+  border-bottom: 1px solid var(--line);
+  padding: clamp(2.5rem, 6vw, 5rem) 0;
+  text-align: center;
+}
+.hero .logo {
+  width: min(88vw, 520px);
+  margin: 0 auto 1.75rem;
+}
+.hero .logo svg { width: 100%; height: auto; display: block; }
+
+.hero .tagline {
+  font-size: clamp(1.15rem, 2.4vw, 1.55rem);
+  font-weight: 600;
+  color: var(--ink);
+  margin: 0 auto .75rem;
+  max-width: 36ch;
+}
+.hero .lede {
+  color: var(--ink-soft);
+  max-width: 56ch;
+  margin: 0 auto 1.75rem;
+}
+.hero .cta-row { display: flex; gap: .75rem; justify-content: center; flex-wrap: wrap; }
+
+/* ---- Buttons ----------------------------------------------------------- */
+.btn {
+  display: inline-block;
+  padding: .7rem 1.3rem;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: .98rem;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: transform .08s ease, box-shadow .15s ease, background .15s ease;
+}
+.btn:hover { text-decoration: none; transform: translateY(-1px); }
+.btn-primary { background: var(--accent); color: #fff; box-shadow: var(--shadow); }
+.btn-primary:hover { background: var(--accent-dark); color: #fff; }
+.btn-ghost { background: #fff; color: var(--ink); border-color: var(--line); }
+.btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ---- Sections ---------------------------------------------------------- */
+section { padding: clamp(2.5rem, 5vw, 4rem) 0; }
+section.alt { background: var(--bg-alt); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+
+.section-head { max-width: 60ch; margin-bottom: 1.75rem; }
+.section-head h2 {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  margin: 0 0 .4rem;
+}
+.section-head .kicker {
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  font-size: .78rem;
+  font-weight: 700;
+  color: var(--accent);
+  margin: 0 0 .5rem;
+}
+.section-head p { color: var(--ink-soft); margin: 0; }
+
+.prose p { color: var(--ink-soft); max-width: 68ch; }
+.prose p + p { margin-top: 1rem; }
+.prose ul {
+  margin: 1rem 0 0; padding-left: 1.2rem; max-width: 68ch;
+  color: var(--ink-soft); display: grid; gap: .5rem;
+}
+.prose li strong { color: var(--ink); }
+
+/* ---- Goals list -------------------------------------------------------- */
+.goals { list-style: none; padding: 0; margin: 1.5rem 0 0; display: grid; gap: 1rem;
+         grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+.goals li {
+  background: #fff; border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 1.25rem 1.25rem 1.25rem 1.25rem;
+  box-shadow: var(--shadow);
+  position: relative;
+}
+.goals li::before {
+  content: ""; display: block; width: 38px; height: 4px; border-radius: 4px;
+  margin-bottom: .85rem;
+  background: var(--blue);
+}
+.goals li:nth-child(2)::before { background: var(--green); }
+.goals li:nth-child(3)::before { background: var(--orange); }
+
+/* ---- People grids ------------------------------------------------------ */
+.people {
+  list-style: none; padding: 0; margin: 1.5rem 0 0;
+  display: grid; gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+.people li {
+  background: #fff; border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 1.1rem 1.2rem; box-shadow: var(--shadow);
+}
+.people .name { font-weight: 700; display: block; }
+.people .role { color: var(--ink-soft); font-size: .92rem; display: block; margin-top: .2rem; }
+.people a { color: var(--ink-soft); }
+.people .lead-badge {
+  display: inline-block; font-size: .7rem; font-weight: 700; letter-spacing: .04em;
+  text-transform: uppercase; color: var(--accent-dark);
+  background: var(--bg-tint); border-radius: 999px; padding: .15rem .55rem;
+  vertical-align: middle; margin-left: .15rem;
+}
+
+/* ---- Logo wall (institutions) ----------------------------------------- */
+.logos {
+  list-style: none; padding: 0; margin: 1.5rem 0 0;
+  display: grid; gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+.logos li { display: flex; }
+.logos img { max-width: 100%; max-height: 64px; height: auto; width: auto; }
+.logos a {
+  flex: 1;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .5rem;
+  background: #fff; border: 1px solid var(--line); border-radius: var(--radius);
+  min-height: 120px; padding: 1.25rem;
+  text-align: center; color: inherit;
+  transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+}
+.logos a:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow);
+  border-color: var(--accent);
+}
+.logos .logo-name { font-weight: 600; font-size: .92rem; color: var(--ink); }
+.logos .logo-sub  { font-size: .8rem; color: var(--ink-faint); }
+
+/* ---- Future / campaigns callout --------------------------------------- */
+.callout {
+  background: linear-gradient(120deg, rgba(109,195,255,.16), rgba(118,222,118,.16));
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: clamp(1.5rem, 4vw, 2.5rem);
+  text-align: center;
+}
+.callout h2 { margin: 0 0 .5rem; }
+.callout p { color: var(--ink-soft); max-width: 52ch; margin: 0 auto 1.25rem; }
+.callout .badge {
+  display: inline-block; font-size: .78rem; font-weight: 700; letter-spacing: .06em;
+  text-transform: uppercase; color: var(--accent-dark);
+  background: #fff; border: 1px solid var(--line); border-radius: 999px;
+  padding: .25rem .8rem; margin-bottom: 1rem;
+}
+
+/* ---- Funding ----------------------------------------------------------- */
+.funding .fund-meta {
+  display: grid; gap: .75rem 2rem; margin-top: 1.25rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+.funding .fund-meta dt { font-weight: 700; font-size: .82rem; text-transform: uppercase; letter-spacing: .05em; color: var(--ink-faint); }
+.funding .fund-meta dd { margin: .15rem 0 0; color: var(--ink); }
+
+/* ---- Footer ------------------------------------------------------------ */
+.footer {
+  border-top: 1px solid var(--line);
+  padding: 2rem 0;
+  color: var(--ink-faint);
+  font-size: .9rem;
+}
+.footer .wrap { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between; align-items: center; }
+.footer a { color: var(--ink-soft); }
+
+@media (max-width: 560px) {
+  .nav { display: none; }
+}

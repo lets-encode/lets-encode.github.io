@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Favicon preview — Let's Encode!</title>
+<style>
+  body { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; margin: 0; padding: 2rem; }
+  h1 { font-size: 1.25rem; margin: 0 0 .25rem; }
+  p.note { color: #666; margin: 0 0 2rem; font-size: .9rem; }
+  .panels { display: flex; flex-wrap: wrap; gap: 1.5rem; }
+  .panel { flex: 1 1 320px; border-radius: 12px; padding: 1.5rem; }
+  .panel.light { background: #ffffff; color: #1f2433; border: 1px solid #e3e6ee; }
+  .panel.dark  { background: #1e1e1e; color: #e8e8e8; }
+  .panel h2 { font-size: .8rem; text-transform: uppercase; letter-spacing: .08em;
+              font-weight: 600; margin: 0 0 1.25rem; opacity: .7; }
+  .row { display: flex; align-items: flex-end; gap: 1.75rem; flex-wrap: wrap; }
+  .cell { display: flex; flex-direction: column; align-items: center; gap: .5rem; }
+  .cell img { display: block; image-rendering: -webkit-optimize-contrast; }
+  /* crisp pixels for the tiny raster sizes */
+  .px img { image-rendering: pixelated; }
+  .cell span { font-size: .72rem; opacity: .65; font-variant-numeric: tabular-nums; }
+  /* simulated browser tab */
+  .tabwrap { margin-top: 2.5rem; }
+  .tab { display: inline-flex; align-items: center; gap: .5rem;
+         padding: .45rem .9rem; border-radius: 8px 8px 0 0; font-size: .82rem; }
+  .light .tab { background: #f1f3f7; color: #333; }
+  .dark  .tab { background: #2b2b2b; color: #ddd; }
+  .tab img { width: 16px; height: 16px; }
+</style>
+</head>
+<body>
+  <h1>Favicon preview — blue hand &amp; note</h1>
+  <p class="note">Rendered at native sizes. The note carries a subtle white backing (invisible on light, visible on dark) so it stays legible in dark mode.</p>
+
+  <div class="panels">
+    <!-- LIGHT -->
+    <section class="panel light">
+      <h2>Light mode</h2>
+      <div class="row">
+        <div class="cell px"><img src="assets/favicon-16.png" width="16" height="16" alt="16px"><span>16×16</span></div>
+        <div class="cell px"><img src="assets/favicon-32.png" width="32" height="32" alt="32px"><span>32×32</span></div>
+        <div class="cell"><img src="assets/favicon.svg" width="48" height="48" alt="48px"><span>48 (svg)</span></div>
+        <div class="cell"><img src="assets/favicon.svg" width="64" height="64" alt="64px"><span>64 (svg)</span></div>
+        <div class="cell"><img src="assets/apple-touch-icon.png" width="120" height="120" alt="apple touch"><span>180 apple</span></div>
+      </div>
+      <div class="tabwrap">
+        <div class="tab"><img src="assets/favicon-16.png" alt="">Let's Encode! — citizen science…</div>
+      </div>
+    </section>
+
+    <!-- DARK -->
+    <section class="panel dark">
+      <h2>Dark mode</h2>
+      <div class="row">
+        <div class="cell px"><img src="assets/favicon-16.png" width="16" height="16" alt="16px"><span>16×16</span></div>
+        <div class="cell px"><img src="assets/favicon-32.png" width="32" height="32" alt="32px"><span>32×32</span></div>
+        <div class="cell"><img src="assets/favicon.svg" width="48" height="48" alt="48px"><span>48 (svg)</span></div>
+        <div class="cell"><img src="assets/favicon.svg" width="64" height="64" alt="64px"><span>64 (svg)</span></div>
+        <div class="cell"><img src="assets/apple-touch-icon.png" width="120" height="120" alt="apple touch"><span>180 apple</span></div>
+      </div>
+      <div class="tabwrap">
+        <div class="tab"><img src="assets/favicon-16.png" alt="">Let's Encode! — citizen science…</div>
+      </div>
+    </section>
+  </div>
+</body>
+</html>
