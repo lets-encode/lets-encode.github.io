@@ -40,9 +40,8 @@ diverse communities:
 
 ## Team
 
-- **David M. Weigl** (P.I.) — Department of Music Acoustics – Wiener Klangstil
-  (IWK), mdw
-- **Julia Jaklin** — project team, mdw
+- **David M. Weigl** (P.I.) — Department of Music Acoustics – Wiener Klangstil, mdw
+- **Julia Jaklin** (Research associate) — Department of Music Acoustics – Wiener Klangstil, mdw
 - PhD researcher — starting September 2026
 - PhD researcher — starting April 2027
 
