@@ -34,14 +34,14 @@
   var MIN_GAP_MS = 7000;
   var MAX_GAP_MS = 12000;
 
-  // Only the hands are hot zones; each still animates its companion element
-  // (apostrophe / note) via the .hover-* CSS, but hovering those does nothing.
+  // Individual hover zones: each hand plus the glyph it tweaks. Hovering any of
+  // these replays that hand's own gesture once (a full loop, not a hold).
   var ZONES = {
-    orange: ["orange-hand"],
-    blue: ["blue-hand"],
-    green: ["green-hand"]
+    orange: ["orange-hand", "apostrophe"],
+    blue:   ["blue-hand", "note"],
+    green:  ["green-hand"]
   };
-  var HOVER_CLASSES = ["hover-orange", "hover-blue", "hover-green"];
+  var ZONE_MS = 650; // a touch longer than the longest single gesture (~0.55s)
 
   function initLetsEncodeLogo(svg) {
     svg = svg || document.getElementById("svg1");
@@ -51,91 +51,122 @@
     if (reduce.matches) return; // honour the user's motion preference
 
     var timer = null;
-    var leaveTimer = null;
-    var activeZone = null;
+    var comboPlaying = false;
+    var zoneBusy = {};
 
     function pauseAuto() {
-      if (timer) {
-        window.clearTimeout(timer);
-        timer = null;
-      }
+      if (timer) { window.clearTimeout(timer); timer = null; }
     }
 
     function scheduleNext() {
       pauseAuto();
       var gap = MIN_GAP_MS + Math.random() * (MAX_GAP_MS - MIN_GAP_MS);
-      timer = window.setTimeout(playOnce, SEQUENCE_MS + gap);
+      timer = window.setTimeout(playCombo, SEQUENCE_MS + gap);
     }
 
-    function playOnce() {
-      if (activeZone) return; // don't auto-play over an active hover
+    // Automated combo: the full staggered orange -> blue -> green sequence.
+    // .play is removed once the sequence ends so it can't keep an identical
+    // animation applied to the hands and shadow the per-hand hover replays.
+    function playCombo() {
       svg.classList.remove("play");
-      // force reflow so re-adding the class restarts the animations cleanly
-      void svg.getBoundingClientRect();
+      void svg.getBoundingClientRect(); // reflow so the animation restarts cleanly
       svg.classList.add("play");
+      comboPlaying = true;
+      window.setTimeout(function () {
+        svg.classList.remove("play");
+        comboPlaying = false;
+      }, SEQUENCE_MS + 50);
       scheduleNext();
     }
 
-    function setZone(zone) {
-      if (leaveTimer) {
-        window.clearTimeout(leaveTimer);
-        leaveTimer = null;
-      }
-      activeZone = zone;
-      pauseAuto();
-      svg.classList.remove("play"); // stop any in-progress auto animation
-      HOVER_CLASSES.forEach(function (c) {
-        svg.classList.toggle(c, c === "hover-" + zone);
-      });
+    // One hand's own gesture, played once when its zone is hovered.
+    function playZone(zone) {
+      if (zoneBusy[zone]) return; // don't restart mid-gesture
+      var cls = "play-" + zone;
+      svg.classList.remove(cls);
+      void svg.getBoundingClientRect();
+      svg.classList.add(cls);
+      zoneBusy[zone] = true;
+      window.setTimeout(function () {
+        svg.classList.remove(cls);
+        zoneBusy[zone] = false;
+      }, ZONE_MS);
     }
 
-    function clearZone() {
-      // Defer slightly: moving between two members of the same zone
-      // (e.g. orange hand -> apostrophe) crosses empty space, so we get a
-      // mouseleave then a mouseenter. The grace period avoids a flicker.
-      if (leaveTimer) window.clearTimeout(leaveTimer);
-      leaveTimer = window.setTimeout(function () {
-        leaveTimer = null;
-        activeZone = null;
-        HOVER_CLASSES.forEach(function (c) {
-          svg.classList.remove(c);
-        });
-        scheduleNext(); // resume the automatic loop
-      }, 80);
-    }
-
-    // Wire up hover zones.
     Object.keys(ZONES).forEach(function (zone) {
       ZONES[zone].forEach(function (id) {
         var el = svg.querySelector("#" + id);
-        if (!el) return;
-        el.addEventListener("mouseenter", function () {
-          setZone(zone);
-        });
-        el.addEventListener("mouseleave", clearZone);
+        if (el) el.addEventListener("mouseenter", function () { playZone(zone); });
       });
     });
 
-    // Pause the loop while the tab is hidden; resume when visible again.
+    // Pause the auto-combo while the tab is hidden; resume when visible again.
     document.addEventListener("visibilitychange", function () {
-      if (document.hidden) {
-        pauseAuto();
-      } else if (!activeZone) {
-        playOnce();
-      }
+      if (document.hidden) { pauseAuto(); }
+      else if (!comboPlaying) { playCombo(); }
     });
 
-    playOnce();
+    playCombo();
   }
 
   // Expose for manual init, and auto-run on DOM ready for the default #svg1.
   window.initLetsEncodeLogo = initLetsEncodeLogo;
 
+  // Guard so a logo-init error can never abort the script before the
+  // header-hands initialiser (below) runs.
+  function safeInitLogo() {
+    try { initLetsEncodeLogo(); } catch (e) { /* logo stays static; hands still load */ }
+  }
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", function () {
-      initLetsEncodeLogo();
-    });
+    document.addEventListener("DOMContentLoaded", safeInitLogo);
   } else {
-    initLetsEncodeLogo();
+    safeInitLogo();
+  }
+})();
+
+/* ---------------------------------------------------------------------------
+ * Header hands
+ *
+ * Each section <h2> carries a small cartoon hand that "tweaks" a glyph in the
+ * heading (see styles.css — the .gx / .hand / .hpic mechanic). This driver
+ * plays each hand's animation once, then replays at a random 6–10s interval,
+ * staggered so they don't move in unison. Hovering anywhere on a heading
+ * replays its hand immediately and suspends that hand's auto-timer so the two
+ * never collide; leaving resumes the loop. Honours prefers-reduced-motion.
+ * ------------------------------------------------------------------------- */
+(function () {
+  "use strict";
+
+  function initHeaderHands() {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    Array.prototype.forEach.call(document.querySelectorAll(".gx"), function (el, idx) {
+      var timer = null;
+      function play() {
+        el.classList.remove("go");
+        void el.offsetWidth; // force reflow so the animation restarts cleanly
+        el.classList.add("go");
+      }
+      function schedule() {
+        timer = window.setTimeout(function () { play(); schedule(); }, 6000 + Math.random() * 4000);
+      }
+      el._play = play;
+      el._pause = function () { if (timer) { window.clearTimeout(timer); timer = null; } };
+      el._resume = schedule;
+      window.setTimeout(function () { play(); schedule(); }, 800 + idx * 850);
+    });
+
+    Array.prototype.forEach.call(document.querySelectorAll("h2"), function (h2) {
+      var gx = h2.querySelector(".gx");
+      if (!gx) return;
+      h2.addEventListener("mouseenter", function () { gx._pause(); gx._play(); });
+      h2.addEventListener("mouseleave", function () { gx._pause(); gx._resume(); });
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initHeaderHands);
+  } else {
+    initHeaderHands();
   }
 })();

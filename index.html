@@ -27,7 +27,7 @@
 <header class="topbar">
   <div class="wrap">
     <a class="brand" href="#top" aria-label="Let's Encode! — back to top">Let's Encode!</a>
-    <nav class="nav" aria-label="Primary">
+    <nav class="nav" id="primary-nav" aria-label="Primary">
       <a href="#about">About</a>
       <a href="#goals">Goals</a>
       <a href="#get-involved">Get involved</a>
@@ -35,6 +35,9 @@
       <a href="#advisory">Advisory board</a>
       <a href="#funding">Funding</a>
     </nav>
+    <button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="primary-nav">
+      <span class="nav-toggle-bars" aria-hidden="true"></span>
+    </button>
   </div>
 </header>
 
@@ -110,43 +113,30 @@
   100% { transform: scale(1) rotate(0deg); }
 }
 
-/* --- Interactive hover ---
-   JS adds one of .hover-orange/.hover-blue/.hover-green to <svg> while the
-   cursor is over that zone. The transform eases to the "peak" of the matching
-   animation (e.g. the bottom of the blue boop) and holds there; removing the
-   class eases back, playing the return leg. */
-#orange-hand, #apostrophe, #blue-hand, #note, #green-hand {
-  transition: transform 0.2s ease-in-out;
-}
-#svg1.hover-orange #orange-hand { transform: rotate(-2.5deg) scaleX(0.97); }
-#svg1.hover-orange #apostrophe  { transform: rotate(-7deg); }
-#svg1.hover-blue   #blue-hand   { transform: translate(0.8px, 1px) rotate(1deg); }
-#svg1.hover-blue   #note        { transform: translateY(1.2px); }
-#svg1.hover-green  #green-hand  { transform: scale(1.035) rotate(-1.5deg); }
-
 @media (prefers-reduced-motion: reduce) {
-  #orange-hand, #blue-hand, #green-hand, #apostrophe, #note {
-    animation: none;
-    transition: none;
-  }
-  #svg1.hover-orange #orange-hand,
-  #svg1.hover-orange #apostrophe,
-  #svg1.hover-blue   #blue-hand,
-  #svg1.hover-blue   #note,
-  #svg1.hover-green  #green-hand { transform: none; }
+  #orange-hand, #blue-hand, #green-hand, #apostrophe, #note { animation: none; }
 }
 
-/* Animations run only while the root <svg> has class "play".
-   JS adds/removes this class to (re)start the sequence. */
+/* The automated combo: the full staggered orange -> blue -> green sequence,
+   played while the root <svg> has class "play" (JS re-adds it on a bounded
+   random timer). */
 #svg1.play #orange-hand { animation: orange-twiddle 0.55s ease-in-out 0s 1 both; }
 #svg1.play #apostrophe  { animation: apostrophe-twiddle 0.55s ease-in-out 0s 1 both; }
 #svg1.play #blue-hand   { animation: blue-boop 0.50s cubic-bezier(0.34, 1.4, 0.64, 1) 0.275s 1 both; }
 #svg1.play #note        { animation: note-boop 0.50s cubic-bezier(0.34, 1.4, 0.64, 1) 0.275s 1 both; }
 #svg1.play #green-hand  { animation: green-pop 0.45s cubic-bezier(0.34, 1.5, 0.64, 1) 0.525s 1 both; }
 
+/* Individual hover replay: JS adds .play-orange / .play-blue / .play-green when
+   the cursor enters that hand or its companion glyph, then removes it when the
+   gesture ends. Each plays its own full gesture once — no stagger, no hold. */
+#svg1.play-orange #orange-hand { animation: orange-twiddle 0.55s ease-in-out 0s 1 both; }
+#svg1.play-orange #apostrophe  { animation: apostrophe-twiddle 0.55s ease-in-out 0s 1 both; }
+#svg1.play-blue   #blue-hand   { animation: blue-boop 0.50s cubic-bezier(0.34, 1.4, 0.64, 1) 0s 1 both; }
+#svg1.play-blue   #note        { animation: note-boop 0.50s cubic-bezier(0.34, 1.4, 0.64, 1) 0s 1 both; }
+#svg1.play-green  #green-hand  { animation: green-pop 0.45s cubic-bezier(0.34, 1.5, 0.64, 1) 0s 1 both; }
+
 ]]></style></defs>
   <g inkscape:label="Layer 1" inkscape:groupmode="layer" id="layer1" transform="translate(-73.818741,-93.662498)">
-    <rect style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.259588;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:0;paint-order:fill markers stroke" id="rect94" width="141.11163" height="40.581127" x="73.818741" y="93.662498" rx="5.0000005" ry="5"/>
     <g class="blue-hand" id="blue-hand"><g id="g31" transform="matrix(0.49406185,0.48471606,-0.48471606,0.49406185,301.88844,151.90373)">
       <path style="fill:#6dc3ff;fill-opacity:1;stroke:#0000ff;stroke-width:0.329372;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;paint-order:fill markers stroke" d="m -617.54269,222.38588 c -4.28784,0.25411 -7.18007,3.96084 -10.3468,6.39653 -8.60674,7.58765 -20.51045,9.76613 -29.28604,17.07396 -5.32159,4.75696 -8.95052,11.13235 -11.7936,17.6044 -0.48805,1.70716 -0.51818,0.65441 -0.3916,-0.48285 0.12762,-2.94514 1.51344,-5.75934 2.00735,-8.70989 -0.18897,-2.44295 -3.3562,-2.23168 -4.93091,-1.29755 -6.2653,2.93112 -9.55507,9.87912 -9.98558,16.52953 -0.68964,8.75181 -0.26574,18.35777 5.01248,25.75301 2.22445,3.05257 6.3245,5.13626 10.07933,4.04741 1.68932,-1.23407 0.11813,-3.49118 -0.16157,-5.06715 -0.64618,-1.89207 -1.38539,-4.13019 -1.41682,-6.08032 2.8819,5.76458 5.92774,11.99025 11.78971,15.28294 6.36848,3.65268 13.34732,7.06016 20.87988,6.82754 6.00132,-0.0657 12.13749,0.13071 17.99837,-1.34004 6.28708,-1.89967 12.52492,-6.57516 13.83277,-13.34031 0.37704,-1.86029 0.32746,-4.93853 -2.17808,-5.13857 -0.57106,-0.1536 -1.93147,0.36945 -1.98009,-0.0738 2.39035,-1.9681 5.57023,-2.93903 7.47325,-5.53118 3.05192,-3.67616 3.74673,-8.97825 2.57638,-13.50427 -0.7482,-2.58326 -3.30926,-4.09439 -5.91018,-4.08612 -1.03701,-0.11171 -2.09839,-0.27579 -3.04047,-0.74835 12.05731,-1.4497 24.2711,-0.88068 36.2945,-2.64673 4.0563,-0.57551 8.36862,-2.48485 9.96338,-6.54391 1.87779,-4.19658 -1.35414,-8.86887 -5.29686,-10.39571 -4.58395,-1.84977 -9.68841,-1.03204 -14.50329,-1.20462 -15.07836,0.16239 -30.20292,0.69007 -45.24638,-0.0339 -1.10827,-0.0932 -2.20899,-0.32225 -3.25891,-0.68991 4.19071,-0.54497 8.51719,-0.0387 12.64983,-0.97982 3.8182,-1.89226 4.96507,-6.62259 5.38991,-10.51543 0.41177,-3.63193 -0.15357,-7.78254 -3.25664,-10.14891 -0.7804,-0.78377 -1.8896,-1.03644 -2.96332,-0.956 z" id="path31" transform="matrix(0.26458333,0,0,0.26458333,-28.491819,30.034714)"/>
       <path d="m -199.1306,112.5733 c -1.68676,-0.47376 -3.4261,-1.32464 -4.24799,-2.07811 -0.44998,-0.41253 -0.97568,-0.565 -2.00586,-0.58178 -1.7565,-0.0286 -2.80071,-0.72567 -3.58429,-2.39266 -1.16438,-2.4771 -1.14402,-7.05153 0.0408,-9.17174 0.82277,-1.47229 1.82001,-2.15327 3.23576,-2.20959 0.98414,-0.0392 1.30026,-0.19843 2.01947,-1.01757 0.56158,-0.6396 1.71955,-1.37727 3.39184,-2.16074 3.70503,-1.7358 4.00935,-1.91615 5.31728,-3.15125 2.07075,-1.95545 3.16387,-2.18996 4.52774,-0.97135 1.04221,0.93122 1.32328,2.80154 0.65967,4.38977 -0.2337,0.55932 -0.42491,1.07711 -0.42491,1.15064 0,0.0735 2.48607,0.0471 5.5246,-0.0587 5.23203,-0.18219 5.58981,-0.16353 6.75581,0.35225 1.55832,0.68931 2.16944,1.89137 1.75122,3.44454 -0.52668,1.95593 -1.51799,2.39314 -6.18562,2.72807 -2.05973,0.1478 -3.7727,0.29423 -3.80659,0.32538 -0.0339,0.0312 0.0447,0.42723 0.17456,0.88015 0.30827,1.07489 -0.0852,2.79873 -0.88235,3.86531 -0.39905,0.53395 -0.66663,1.32642 -0.74633,2.2103 -0.16398,1.81881 -1.07736,2.99956 -3.04646,3.93823 -1.30229,0.62081 -1.92614,0.73866 -4.30134,0.81253 -1.88418,0.0586 -3.22504,-0.0391 -4.16702,-0.30368 z m 8.03416,-1.48053 c 1.45346,-0.7206 2.48286,-2.05131 2.48286,-3.20959 0,-0.63916 -0.0977,-0.75708 -0.57072,-0.68848 -0.95878,0.13907 -0.86682,-0.55778 0.1285,-0.97365 1.2852,-0.537 2.07368,-1.73132 2.09549,-3.1741 0.0208,-1.37659 -0.39361,-1.98563 -1.35494,-1.99123 -0.83716,-0.005 -1.48331,-0.37072 -1.26853,-0.71824 0.0858,-0.13875 2.35443,-0.3254 5.04151,-0.41477 5.28518,-0.17578 6.40189,-0.42633 7.17778,-1.61048 0.61669,-0.9412 0.22924,-2.01149 -0.94609,-2.61349 -0.82675,-0.42346 -1.51734,-0.4502 -7.52487,-0.29141 -7.14214,0.18879 -9.65729,0.0366 -9.65729,-0.5843 0,-0.29329 0.43725,-0.37784 1.95394,-0.37784 1.83462,0 1.98276,-0.044 2.42572,-0.72001 0.67794,-1.03468 0.82292,-3.07378 0.27769,-3.9059 -0.69687,-1.06355 -1.60824,-0.87369 -3.24735,0.67651 -0.89272,0.8443 -2.17826,1.68493 -3.46516,2.26591 -3.2222,1.45469 -3.7526,1.75392 -4.91895,2.77507 -0.96901,0.84837 -2.50134,3.36949 -2.95482,4.86155 -0.14858,0.48884 -0.18049,0.49415 -0.41878,0.0697 -0.23474,-0.41812 -0.0379,-1.67621 0.46878,-2.99667 0.24101,-0.62805 -0.84504,-0.45047 -1.71333,0.28015 -1.1606,0.97658 -1.69927,2.55329 -1.71778,5.02807 -0.0266,3.56174 1.3163,6.2177 3.14387,6.2177 0.35264,0 0.63936,-0.0298 0.63717,-0.0661 -0.002,-0.0364 -0.17556,-0.5424 -0.38526,-1.12448 -0.42775,-1.18732 -0.51573,-2.24896 -0.18638,-2.24896 0.11997,0 0.54707,0.71253 0.94913,1.58341 0.85111,1.84356 1.79367,2.72276 3.99301,3.72458 2.09622,0.95484 2.44672,1.01348 5.58644,0.93462 2.21233,-0.0556 2.90103,-0.17836 3.96836,-0.70753 z" style="fill:#000000" id="path1"/>
@@ -209,7 +199,7 @@
     <div class="wrap">
       <div class="section-head">
         <p class="kicker">About the project</p>
-        <h2 id="about-heading">Making music readable by machines</h2>
+        <h2 id="about-heading" aria-label="Making music readable by machines">Making music readable by machine<span class="gx side r hold" style="--s:1.5em;--r:28deg;--hb:-.4em;--ovl:.5em;--lift:.16em"><span class="gly">s</span><span class="hand"><img class="hpic" src="assets/hands/measure-blue.svg" alt="" aria-hidden="true"></span></span></h2>
       </div>
       <div class="prose">
         <p>
@@ -241,7 +231,7 @@
     <div class="wrap">
       <div class="section-head">
         <p class="kicker">What we're working towards</p>
-        <h2 id="goals-heading">Project goals</h2>
+        <h2 id="goals-heading" aria-label="Project goals">Project goa<span class="gx above twiddle" style="--s:1.2em;--hx:0%;--dx:.58em;--r:-15deg;--dip:.5em;--ox:50%;--oy:32%;--spin:-1"><span class="gly">l</span><span class="hand"><img class="hpic" src="assets/hands/pinch-orange.svg" alt="" aria-hidden="true"></span></span>s</h2>
         <p>We investigate ways to make semantic music-encoding technologies accessible to diverse communities. Early collaborations include:</p>
       </div>
       <ul class="goals">
@@ -266,7 +256,7 @@
     <div class="wrap">
       <div class="callout">
         <span class="badge">Coming soon</span>
-        <h2 id="involved-heading">Start or join a campaign</h2>
+        <h2 id="involved-heading" aria-label="Start or join a campaign">Start or join a cam<span class="gx below nudge" style="--s:1.4em;--hx:60%;--dip:.20em;--ox:50%;--oy:100%;--hr:-8deg;--gr:6deg"><span class="gly">p</span><span class="hand"><img class="hpic" src="assets/hands/thumb-green.svg" alt="" aria-hidden="true"></span></span>aign</h2>
         <p>
           Soon you'll be able to launch your own encoding campaign or join one already under
           way — contributing encodings, validating others' work, and watching a collection
@@ -282,7 +272,7 @@
     <div class="wrap">
       <div class="section-head">
         <p class="kicker">Who we are</p>
-        <h2 id="team-heading">Team</h2>
+        <h2 id="team-heading" aria-label="Team">Tea<span class="gx side r wave" style="--s:1.4em;--r:5deg;--hb:0em;--ovl:-.06em;--ox:110%;--oy:90%"><span class="gly">m</span><span class="hand"><img class="hpic" src="assets/hands/wave-pink.svg" alt="" aria-hidden="true"></span></span></h2>
       </div>
       <ul class="people">
         <li>
@@ -327,8 +317,9 @@
   <section id="advisory" aria-labelledby="advisory-heading">
     <div class="wrap">
       <div class="section-head">
-        <p class="kicker">Guiding the project</p>
-        <h2 id="advisory-heading">Advisory board</h2>
+        <p class="kicker">Guidance &amp; community voices</p>
+        <h2 id="advisory-heading" aria-label="Advisory board"><span class="gx under shake" style="--s:1.3em;--r:-2deg;--dip:0em;--ox:150%;--oy:50%"><span class="gly">Advisory board</span><span class="hand"><img class="hpic" src="assets/hands/handshake.svg" alt="" aria-hidden="true"></span></span></h2>
+        <p>Our advisory board guides the project's direction and represents the communities partnering in this research.</p>
       </div>
       <ul class="people">
         <li>
@@ -341,7 +332,7 @@
         </li>
         <li>
           <span class="name"><a href="https://eng.ox.ac.uk/people/david-lewis" target="_blank" rel="noopener">David Lewis</a></span>
-          <span class="role"><a href="https://oerc.ox.ac.uk" target="_blank" rel="noopener">Oxford e-Research Centre</a> &amp; <a href="https://gold.ac.uk" target="_blank" rel="noopener">Goldsmiths, University of London</a> (UK)</span>
+          <span class="role"><a href="https://oerc.ox.ac.uk" target="_blank" rel="noopener">Oxford e-Research Centre</a> &amp; <a href="https://gold.ac.uk" target="_blank" rel="noopener">Goldsmiths, University of London</a> (UK) · Lute Society</span>
         </li>
         <li>
           <span class="name">Laurent Pugin</span>
@@ -356,7 +347,7 @@
     <div class="wrap">
       <div class="section-head">
         <p class="kicker">Funding &amp; acknowledgements</p>
-        <h2 id="funding-heading">Supported by the Austrian Science Fund</h2>
+        <h2 id="funding-heading" aria-label="Supported by the Austrian Science Fund">Supported by the Austrian Science <span class="gx below lift" style="--s:.95em;--hx:50%;--dx:-.06em;--dip:.35em;--r:10deg"><span class="gly">Fun</span><span class="hand"><img class="hpic" src="assets/hands/palm-gold.svg" alt="" aria-hidden="true"></span></span>d</h2>
         <p>
           Let's Encode! is funded by the Austrian Science Fund (FWF), project number
           <strong>PAT 2277625</strong>.
@@ -418,6 +409,30 @@
 
 <script>
   document.getElementById("year").textContent = new Date().getFullYear();
+
+  // Mobile burger menu: toggles the primary nav dropdown.
+  (function () {
+    var btn = document.querySelector(".nav-toggle");
+    var nav = document.getElementById("primary-nav");
+    if (!btn || !nav) return;
+    function setOpen(open) {
+      nav.classList.toggle("open", open);
+      btn.setAttribute("aria-expanded", open ? "true" : "false");
+      btn.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+    }
+    btn.addEventListener("click", function () {
+      setOpen(!nav.classList.contains("open"));
+    });
+    nav.addEventListener("click", function (e) {
+      if (e.target.closest("a")) setOpen(false); // close after choosing a link
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") setOpen(false);
+    });
+    document.addEventListener("click", function (e) {
+      if (!nav.contains(e.target) && !btn.contains(e.target)) setOpen(false); // close on outside click
+    });
+  })();
 </script>
 <!-- Animated-logo driver: plays the hand sequence, then loops every 8–16s.
      Respects prefers-reduced-motion and pauses on hidden tabs. -->
