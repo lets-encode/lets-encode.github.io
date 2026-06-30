@@ -156,22 +156,29 @@
       window.setTimeout(function () { play(); schedule(); }, 800 + idx * 850);
     });
 
-    // One trigger mechanism only: hover on devices that have it, touch on those
-    // that don't. We never bind "click", so a tap doesn't double-fire and a
-    // mouse click on desktop stays inert.
-    var canHover = window.matchMedia("(hover: hover)").matches;
+    // One trigger per input type, discriminated by pointerType rather than a
+    // (hover: hover) media query — devices with a hovering stylus (e.g. the
+    // Galaxy S24 Ultra's S Pen) report hover:hover even though the user taps
+    // with a finger, which would otherwise trap touch in the hover path (plays
+    // once, then needs a mouseleave elsewhere before it can replay).
+    //   - mouse / pen hover: replay on enter, restore the loop on leave.
+    //   - finger touch: replay on every tap, then restart the loop clock.
+    // We never bind "click", so a tap doesn't double-fire and a desktop click
+    // stays inert.
     Array.prototype.forEach.call(document.querySelectorAll("h2"), function (h2) {
       var gx = h2.querySelector(".gx");
       if (!gx) return;
-      if (canHover) {
-        h2.addEventListener("mouseenter", function () { gx._pause(); gx._play(); });
-        h2.addEventListener("mouseleave", function () { gx._pause(); gx._resume(); });
-      } else {
-        // Touch screens: replay once on tap, then restart the auto-loop clock.
-        h2.addEventListener("touchstart", function () {
-          gx._pause(); gx._play(); gx._resume();
-        }, { passive: true });
-      }
+      h2.addEventListener("pointerenter", function (e) {
+        if (e.pointerType === "touch") return; // touch handled below
+        gx._pause(); gx._play();
+      });
+      h2.addEventListener("pointerleave", function (e) {
+        if (e.pointerType === "touch") return;
+        gx._pause(); gx._resume();
+      });
+      h2.addEventListener("touchstart", function () {
+        gx._pause(); gx._play(); gx._resume();
+      }, { passive: true });
     });
   }
 

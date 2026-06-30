@@ -511,7 +511,7 @@ section.alt {
   /* clear the sticky topbar on anchor jumps so the section kicker stays visible
      (desktop's larger section padding already handles this) */
   html {
-    scroll-padding-top: 23px;
+    scroll-padding-top: 26px;
   }
 
   /* burger button on the right; brand stays on the left */
@@ -608,8 +608,12 @@ section.alt {
 /* Keeps a word intact when a hand splits it: the .gx wrapper is inline-block,
    which would otherwise let the line break mid-word (e.g. "camp"/"aign"). The
    word's text fragments + its .gx live inside .gw so wrapping happens only at
-   the spaces between words, never inside the hand markup. */
+   the spaces between words, never inside the hand markup.
+   inline-block (not merely nowrap) makes the word a firm atomic unit — Gecko
+   (Firefox Android) still takes the wrap opportunity around the inline-block
+   .gx inside a plain nowrap *inline*, so the word must be inline-block too. */
 .gw {
+  display: inline-block;
   white-space: nowrap;
 }
 
