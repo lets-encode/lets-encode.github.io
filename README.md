@@ -25,7 +25,7 @@ meaning by hand, as a crowd:
 - **Nothing to install** — the tools run entirely in the browser, on whatever
   device you already have.
 - **User-directed campaigns** — contributors can *start and manage* their own
-  encoding campaigns from the browser, not just take part in someone else's.
+  encoding campaigns from the browser as well as taking part in someone else's.
 
 ### Goals
 

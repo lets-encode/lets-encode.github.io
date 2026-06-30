@@ -156,11 +156,22 @@
       window.setTimeout(function () { play(); schedule(); }, 800 + idx * 850);
     });
 
+    // One trigger mechanism only: hover on devices that have it, touch on those
+    // that don't. We never bind "click", so a tap doesn't double-fire and a
+    // mouse click on desktop stays inert.
+    var canHover = window.matchMedia("(hover: hover)").matches;
     Array.prototype.forEach.call(document.querySelectorAll("h2"), function (h2) {
       var gx = h2.querySelector(".gx");
       if (!gx) return;
-      h2.addEventListener("mouseenter", function () { gx._pause(); gx._play(); });
-      h2.addEventListener("mouseleave", function () { gx._pause(); gx._resume(); });
+      if (canHover) {
+        h2.addEventListener("mouseenter", function () { gx._pause(); gx._play(); });
+        h2.addEventListener("mouseleave", function () { gx._pause(); gx._resume(); });
+      } else {
+        // Touch screens: replay once on tap, then restart the auto-loop clock.
+        h2.addEventListener("touchstart", function () {
+          gx._pause(); gx._play(); gx._resume();
+        }, { passive: true });
+      }
     });
   }
 
