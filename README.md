@@ -4,10 +4,12 @@
 
 **Let's Encode!** is a citizen-science project for crowd-based encoding and
 validation of music scores in the [MEI](https://music-encoding.org) (Music
-Encoding Initiative) format. It builds infrastructure around
-[mei-friend](https://mei-friend.mdw.ac.at), a free, browser-based music encoding
-editor, so that anyone can help turn sheet music into rich, machine-readable
-encodings — no specialist training required.
+Encoding Initiative) format. It builds infrastructure spanning a range of free,
+browser-based tools pitched at different levels of technical expertise — from the
+[mei-friend](https://mei-friend.mdw.ac.at) music encoding editor to graphical
+interfaces that need no MEI knowledge at all — so the right person can use the
+right tool for the right task. Anyone can help turn sheet music into rich,
+machine-readable encodings, no specialist training required.
 
 This repository contains the project's landing page, served at
 **[letsenco.de](https://letsenco.de)**.
@@ -15,7 +17,7 @@ This repository contains the project's landing page, served at
 ## About the project
 
 Digital scores are essential to both performance and musicology, but standard
-PDFs and scans can't easily be processed by computers: the musical *semantics*
+PDFs and scans can't easily be processed by computers: the music *semantics*
 stay hidden from machines. Let's Encode! lowers the barrier to encoding that
 meaning by hand, as a crowd:
 
