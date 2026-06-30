@@ -245,3 +245,76 @@ section.alt { background: var(--bg-alt); border-top: 1px solid var(--line); bord
 @media (max-width: 560px) {
   .nav { display: none; }
 }
+
+/* =========================================================================
+   Header hands — a small cartoon hand "tweaks" each section heading, echoing
+   the logo. A target glyph is wrapped in .gx; .hand is the positioning wrapper
+   (resting placement set per-heading via CSS vars: --s size, --r tilt,
+   --hx/--dx/--hb position, --dip reach, --ovl overlap), and .hpic is the image
+   that runs the animation about its own pivot (--ox/--oy). The image transforms
+   are additive to the wrapper's resting transform. Driven by lets-encode-logo.js.
+   ========================================================================= */
+.gx { position: relative; display: inline-block; }
+.gly { display: inline-block; transition: transform .25s ease; }
+.hand { position: absolute; z-index: 2; pointer-events: none; }
+.hpic { display: block; width: auto; height: var(--s, 1.4em);
+        transform-origin: var(--ox, 50%) var(--oy, 100%); transition: transform .25s ease; }
+
+/* resting placement (above / below / beside / mirrored-right / centred-under) */
+.gx.above .hand { left: calc(var(--hx,50%) + var(--dx,0em)); bottom: calc(100% - var(--dip,.16em));
+                  transform: translateX(-50%) rotate(var(--r,0deg)); transform-origin: 50% 100%; }
+.gx.below .hand { left: calc(var(--hx,50%) + var(--dx,0em)); top: calc(100% - var(--dip,.12em));
+                  transform: translateX(-50%) rotate(var(--r,0deg)) scaleX(var(--flip,1)); transform-origin: 50% 0%; }
+.gx.side  .hand { right: calc(100% - var(--ovl,.06em)); bottom: var(--hb,-.12em);
+                  transform: rotate(var(--r,0deg)); transform-origin: 100% 60%; }
+.gx.side.r .hand { left: calc(100% - var(--ovl,.06em)); right: auto; transform-origin: 0% 60%; }
+.gx.under .hand { left: calc(50% + var(--dx,0em)); top: calc(100% - var(--dip,.3em)); height: var(--s,1.3em);
+                  transform: translateX(-50%) rotate(var(--r,0deg)); transform-origin: 50% 0%; }
+.gx.above .gly { transform-origin: 50% 92%; }
+.gx.below .gly { transform-origin: 50% 8%; }
+
+/* headings whose hand reaches above the cap line get headroom to clear the kicker */
+.section-head h2:has(.gx.above) { margin-top: 1.15em; }
+
+/* hover holds the pose peak (image animates about --ox/--oy; rest stays put) */
+.gx.twiddle:hover .hpic { transform: rotate(calc(var(--spin,1) * -7deg)); }
+.gx.twiddle:hover .gly  { transform: rotate(-7deg); }
+.gx.lift:hover .hpic { transform: translateY(-.06em); }
+.gx.lift:hover .gly  { transform: translateY(-.12em); }
+.gx.point:hover .hpic { transform: translateX(.12em); }
+.gx.shake:hover .hpic { transform: rotate(-3deg); }
+.gx.wag:hover   .hpic { transform: rotate(-10deg); }
+
+/* one-shot auto-replay (JS toggles .go ~6–10s, staggered) */
+@keyframes glyTwiddle { 0%,100%{transform:rotate(0)} 35%{transform:rotate(-7deg)} 70%{transform:rotate(4deg)} }
+@keyframes hpicTwiddle{ 0%,100%{transform:rotate(0)} 35%{transform:rotate(calc(var(--spin,1) * -7deg))} 70%{transform:rotate(calc(var(--spin,1) * 5deg))} }
+@keyframes glyLift { 0%,100%{transform:translateY(0)} 45%{transform:translateY(-.12em)} }
+@keyframes hpicBob { 0%,100%{transform:translateY(0)} 45%{transform:translateY(-.06em)} }
+@keyframes hpicPoke { 0%,100%{transform:translateX(0)} 40%{transform:translateX(.12em)} 70%{transform:translateX(-.02em)} }
+@keyframes hpicShake{ 0%,100%{transform:rotate(0)} 22%{transform:rotate(-3deg)} 50%{transform:rotate(2deg)} 78%{transform:rotate(-1deg)} }
+@keyframes hpicWag  { 0%,100%{transform:rotate(0)} 28%{transform:rotate(-10deg)} 58%{transform:rotate(6deg)} }
+@keyframes hpicNudge{ 0%,100%{transform:rotate(0)} 45%{transform:rotate(var(--hr,-8deg))} }
+@keyframes glyNudge { 0%,100%{transform:rotate(0)} 45%{transform:rotate(var(--gr,6deg))} }
+@keyframes hpicWave { 0%,100%{transform:rotate(0)} 18%{transform:rotate(-10deg)} 42%{transform:rotate(8deg)} 66%{transform:rotate(-6deg)} 86%{transform:rotate(4deg)} }
+@keyframes glyHold  { 0%,100%{transform:translateY(0)} 50%{transform:translateY(calc(-1 * var(--lift,.16em)))} }
+@keyframes handHold { 0%,100%{transform:rotate(var(--r,0deg))} 50%{transform:translateY(calc(-1 * var(--lift,.16em))) rotate(var(--r,0deg))} }
+
+.gx.twiddle.go .gly  { animation: glyTwiddle .60s ease-in-out; }
+.gx.twiddle.go .hpic { animation: hpicTwiddle .60s ease-in-out; }
+.gx.lift.go .gly  { animation: glyLift .55s cubic-bezier(.34,1.5,.64,1); }
+.gx.lift.go .hpic { animation: hpicBob .55s cubic-bezier(.34,1.5,.64,1); }
+.gx.point.go .hpic { animation: hpicPoke .60s ease-in-out; }
+.gx.shake.go .hpic { animation: hpicShake .65s ease-in-out; }
+.gx.wag.go   .hpic { animation: hpicWag .60s ease-in-out; }
+.gx.nudge.go .hpic { animation: hpicNudge .55s cubic-bezier(.34,1.5,.64,1); }
+.gx.nudge.go .gly  { animation: glyNudge .55s cubic-bezier(.34,1.5,.64,1); }
+.gx.wave.go .hpic { animation: hpicWave .9s ease-in-out; }
+.gx.hold.go .gly  { animation: glyHold .75s ease-in-out; }
+.gx.hold.go .hand { animation: handHold .75s ease-in-out; }
+.gx.hold:hover .gly  { transform: translateY(calc(-1 * var(--lift,.16em))); }
+.gx.hold:hover .hand { transform: translateY(calc(-1 * var(--lift,.16em))) rotate(var(--r,0deg)); }
+
+@media (prefers-reduced-motion: reduce) {
+  .gly, .hpic, .hand { transition: none; }
+  .go .gly, .go .hpic, .go .hand { animation: none !important; }
+}
