@@ -121,6 +121,14 @@ a:hover {
   display: block;
 }
 
+/* Plaintext wordmark — shown only on mobile (see the max-width: 560px block),
+   where it replaces the logo image. Hidden by default on wider screens. */
+.brand-text {
+  display: none;
+  font-size: 1.3rem;
+  line-height: 1;
+}
+
 .nav {
   display: flex;
   gap: 1.25rem;
@@ -512,6 +520,15 @@ section.alt {
      (desktop's larger section padding already handles this) */
   html {
     scroll-padding-top: 26px;
+  }
+
+  /* swap the logo image for a plaintext wordmark on mobile */
+  .brand-logo {
+    display: none;
+  }
+
+  .brand-text {
+    display: inline;
   }
 
   /* burger button on the right; brand stays on the left */

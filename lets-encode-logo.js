@@ -93,10 +93,35 @@
       }, ZONE_MS);
     }
 
+    // Desktop: hovering a single hand (mouse or pen) replays just that hand's
+    // gesture. We discriminate by pointerType so a finger tap never triggers an
+    // individual hand — on touch the whole logo plays the combo instead (below).
     Object.keys(ZONES).forEach(function (zone) {
       ZONES[zone].forEach(function (id) {
         var el = svg.querySelector("#" + id);
-        if (el) el.addEventListener("mouseenter", function () { playZone(zone); });
+        if (el) el.addEventListener("pointerenter", function (e) {
+          if (e.pointerType === "touch") return;
+          playZone(zone);
+        });
+      });
+    });
+
+    // Mobile/touch: a tap anywhere on the logo plays the full staggered
+    // orange -> blue -> green sequence, rather than any one hand.
+    svg.addEventListener("touchstart", function () { playCombo(); }, { passive: true });
+
+    // "Back to top" links (navbar brand, footer wordmark) replay the full combo
+    // once the scroll-to-top has settled. The target is the document top, so we
+    // just wait for scrollY to reach 0 — covers smooth scrolling, instant jumps,
+    // and the already-at-top case — then play. Bound here (after the reduced-
+    // motion early-return) so it stays silent when motion is reduced.
+    Array.prototype.forEach.call(document.querySelectorAll('a[href="#top"]'), function (link) {
+      link.addEventListener("click", function () {
+        var tries = 0;
+        var iv = window.setInterval(function () {
+          if (window.scrollY < 1) { window.clearInterval(iv); playCombo(); }
+          else if (++tries > 60) { window.clearInterval(iv); }
+        }, 40);
       });
     });
 
