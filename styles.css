@@ -507,11 +507,17 @@ section.alt {
   flex-wrap: wrap;
   gap: 1rem;
   justify-content: space-between;
-  align-items: center;
+  align-items: baseline;
 }
 
 .footer a {
   color: var(--ink-soft);
+}
+
+.footer-left {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.5;
 }
 
 @media (max-width: 560px) {

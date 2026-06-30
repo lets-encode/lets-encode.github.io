@@ -399,7 +399,10 @@
 <!-- ====================== FOOTER ====================== -->
 <footer class="footer">
   <div class="wrap">
-    <span>© <span id="year">2026</span> <a href="#top">Let's Encode!</a> · <a href="https://mdw.ac.at" target="_blank" rel="noopener">mdw — University of Music and Performing Arts Vienna</a></span>
+    <div class="footer-left">
+      <span>© <span id="year">2026</span> <a href="#top">Let's Encode!</a> · <a href="https://mdw.ac.at" target="_blank" rel="noopener">mdw — University of Music and Performing Arts Vienna</a></span>
+      <span class="footer-updated">Last updated: <time id="last-updated" datetime="2026-06-30">30 June 2026</time></span>
+    </div>
     <span>
       <a href="https://iwk.mdw.ac.at/lets-encode" target="_blank" rel="noopener">Project page</a>
       &nbsp;·&nbsp;
@@ -414,6 +417,18 @@
 
 <script>
   document.getElementById("year").textContent = new Date().getFullYear();
+
+  // "Last updated" reflects the deployed file's Last-Modified time (≈ deploy date
+  // on GitHub Pages), so it stays current with no manual upkeep. Falls back to the
+  // date baked into the markup if the timestamp is missing/unparseable.
+  (function () {
+    var el = document.getElementById("last-updated");
+    if (!el) return;
+    var d = new Date(document.lastModified);
+    if (isNaN(d)) return;
+    el.dateTime = d.toISOString().slice(0, 10);
+    el.textContent = d.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
+  })();
 
   // Mobile burger menu: toggles the primary nav dropdown.
   (function () {
