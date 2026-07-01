@@ -185,12 +185,17 @@ a:hover {
   z-index: 1;
 }
 
+/* Align to the .wrap content edges (where the navbar brand & last item sit)
+   rather than the viewport edges: the wrap is centred at max-width --maxw with
+   1.25rem side padding. */
 .hero-corner-left {
-  left: clamp(1rem, 3vw, 2rem);
+  /* small extra nudge so IWK's visible left edge lines up with the project
+     logo's first glyph (the brand logo carries a little left bearing) */
+  left: calc(50% - min(50%, var(--maxw) / 2) + 1.25rem + 0.4rem);
 }
 
 .hero-corner-right {
-  right: clamp(1rem, 3vw, 2rem);
+  right: calc(50% - min(50%, var(--maxw) / 2) + 1.25rem);
 }
 
 .hero-corner img {
@@ -567,6 +572,16 @@ section.alt {
      centered project logo down clear of them (logo height + inset + breathing room) */
   .hero {
     padding-top: 5.5rem;
+  }
+
+  /* on mobile the brand is plain text (no left bearing) and the burger sits at
+     the gutter, so drop the desktop nudge and pull both logos left to line up */
+  .hero-corner-left {
+    left: 1.25rem;
+  }
+
+  .hero-corner-right {
+    right: 1.45rem;
   }
 
   /* swap the logo image for a plaintext wordmark on mobile */
