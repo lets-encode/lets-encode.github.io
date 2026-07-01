@@ -161,6 +161,7 @@ a:hover {
   border-bottom: 1px solid var(--line);
   padding: clamp(2.5rem, 6vw, 5rem) 0;
   text-align: center;
+  position: relative;
 }
 
 .hero .logo {
@@ -172,6 +173,35 @@ a:hover {
   width: 100%;
   height: auto;
   display: block;
+}
+
+/* Institutional logos pinned to the top corners of the hero. */
+.hero-corner {
+  position: absolute;
+  top: clamp(1rem, 3vw, 2rem);
+  display: inline-flex;
+  align-items: center;
+  transition: transform .15s ease, opacity .15s ease;
+  z-index: 1;
+}
+
+.hero-corner-left {
+  left: clamp(1rem, 3vw, 2rem);
+}
+
+.hero-corner-right {
+  right: clamp(1rem, 3vw, 2rem);
+}
+
+.hero-corner img {
+  height: 44px;
+  width: auto;
+  display: block;
+}
+
+.hero-corner:hover {
+  transform: translateY(-2px);
+  opacity: .85;
 }
 
 .hero .tagline {
@@ -526,6 +556,17 @@ section.alt {
      (desktop's larger section padding already handles this) */
   html {
     scroll-padding-top: 26px;
+  }
+
+  /* smaller corner logos so they clear the centered project logo on narrow screens */
+  .hero-corner img {
+    height: 30px;
+  }
+
+  /* the corner logos are absolutely positioned, so add top padding to push the
+     centered project logo down clear of them (logo height + inset + breathing room) */
+  .hero {
+    padding-top: 5.5rem;
   }
 
   /* swap the logo image for a plaintext wordmark on mobile */
