@@ -110,6 +110,24 @@
     // orange -> blue -> green sequence, rather than any one hand.
     svg.addEventListener("touchstart", function () { playCombo(); }, { passive: true });
 
+    // On touch, a tap leaves :hover "stuck" on the brand, so the navbar logo
+    // stays colourful indefinitely. Track whether the current brand interaction
+    // is touch (and clear the settle-to-mono override on every fresh press so
+    // hover/tap can re-colour it).
+    var brand = document.querySelector(".brand");
+    var brandTouched = false;
+    if (brand) {
+      brand.addEventListener("pointerdown", function (e) {
+        brand.classList.remove("is-mono");
+        brandTouched = (e.pointerType === "touch");
+      });
+      // Fallback for browsers that fire touchstart without pointer events.
+      brand.addEventListener("touchstart", function () {
+        brand.classList.remove("is-mono");
+        brandTouched = true;
+      }, { passive: true });
+    }
+
     // "Back to top" links (navbar brand, footer wordmark) replay the full combo
     // once the scroll-to-top has settled. The target is the document top, so we
     // just wait for scrollY to reach 0 — covers smooth scrolling, instant jumps,
@@ -119,8 +137,17 @@
       link.addEventListener("click", function () {
         var tries = 0;
         var iv = window.setInterval(function () {
-          if (window.scrollY < 1) { window.clearInterval(iv); playCombo(); }
-          else if (++tries > 60) { window.clearInterval(iv); }
+          if (window.scrollY < 1) {
+            window.clearInterval(iv);
+            // Touch only: settle the navbar logo back to monochrome as soon as
+            // the scroll-to-top completes (the class outranks the stuck :hover).
+            // Skipped on mouse/pen, where :hover correctly keeps colour while
+            // hovering. Done before playing so the hero gets the colour, not it.
+            if (brandTouched && link.closest(".brand")) {
+              brand.classList.add("is-mono");
+            }
+            playCombo();
+          } else if (++tries > 60) { window.clearInterval(iv); }
         }, 40);
       });
     });

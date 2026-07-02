@@ -164,6 +164,22 @@ a:hover {
   opacity: 1;
 }
 
+/* Settle back to monochrome after a touch tap (JS adds .is-mono once the hero
+   combo has played). Touch leaves :hover stuck "on", so these must outrank the
+   :hover rules above — same specificity, so they rely on coming later in source.
+   Also drops the hover lift so the logo returns to rest. */
+.brand.is-mono .brand-logo-rest {
+  opacity: 1;
+}
+
+.brand.is-mono .brand-logo-hover {
+  opacity: 0;
+}
+
+.brand.is-mono .brand-logo {
+  transform: none;
+}
+
 /* Plaintext wordmark — shown only on mobile (see the max-width: 560px block),
    where it replaces the logo image. Hidden by default on wider screens. */
 .brand-text {
