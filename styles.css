@@ -115,10 +115,53 @@ a:hover {
   text-decoration: none;
 }
 
+/* Logo swap: the monochrome nav artwork (fill-less hands) shows at rest and
+   cross-fades to the full-colour logo on hover. The COLOUR svg is the reference
+   — it sits in flow and sets the box (width + rendered height, 120px wide). The
+   two files are the same artwork but framed differently (the mono png has wider
+   margins + is ~5% smaller at a given width), so the mono png is overlaid
+   absolutely and up-scaled/offset until its ink registers onto the colour ink. */
 .brand-logo {
-  height: 35px;
-  width: auto;
+  position: relative;
   display: block;
+  width: 120px;
+  /* match the rendered width of the IWK hero-corner logo */
+  overflow: hidden;
+  /* same lift as the hero-corner institutional logos on hover */
+  transition: transform .15s ease;
+}
+
+.brand:hover .brand-logo {
+  transform: translateY(-2px);
+}
+
+.brand-logo-img {
+  display: block;
+  transition: opacity .15s ease;
+}
+
+/* colour svg — in flow, defines the slot */
+.brand-logo-hover {
+  width: 120px;
+  height: auto;
+  opacity: 0;
+}
+
+/* mono png — overlay, sized/positioned to match the colour ink */
+.brand-logo-rest {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 126px;
+  height: auto;
+}
+
+.brand:hover .brand-logo-rest {
+  opacity: 0;
+}
+
+.brand:hover .brand-logo-hover {
+  opacity: 1;
 }
 
 /* Plaintext wordmark — shown only on mobile (see the max-width: 560px block),
@@ -582,15 +625,6 @@ section.alt {
 
   .hero-corner-right {
     right: 1.45rem;
-  }
-
-  /* swap the logo image for a plaintext wordmark on mobile */
-  .brand-logo {
-    display: none;
-  }
-
-  .brand-text {
-    display: inline;
   }
 
   /* burger button on the right; brand stays on the left */
