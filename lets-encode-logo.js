@@ -114,14 +114,18 @@
     // stays colourful indefinitely. Track whether the current brand interaction
     // is touch (and clear the settle-to-mono override on every fresh press so
     // hover/tap can re-colour it).
+    // We only ever set brandTouched *true* — never reset it from a pointer
+    // event. Browsers fire a compatibility mouse-type pointerdown after a touch
+    // tap, and deriving the flag from pointerType let that stray event flip it
+    // back to false, so the settle-to-mono step below never ran. touchstart is
+    // the reliable touch signal (it never fires for a real mouse).
     var brand = document.querySelector(".brand");
     var brandTouched = false;
     if (brand) {
       brand.addEventListener("pointerdown", function (e) {
-        brand.classList.remove("is-mono");
-        brandTouched = (e.pointerType === "touch");
+        brand.classList.remove("is-mono"); // fresh press: allow re-colour
+        if (e.pointerType === "touch") brandTouched = true;
       });
-      // Fallback for browsers that fire touchstart without pointer events.
       brand.addEventListener("touchstart", function () {
         brand.classList.remove("is-mono");
         brandTouched = true;
