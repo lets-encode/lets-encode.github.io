@@ -44,7 +44,7 @@ diverse communities:
 
 - **David M. Weigl** (P.I.) — Department of Music Acoustics – Wiener Klangstil, mdw
 - **Julia Jaklin** (Research Associate) — Department of Music Acoustics – Wiener Klangstil, mdw
-- PhD researcher — starting September 2026
+- PhD researcher — starting Autumn 2026
 - PhD researcher — starting April 2027
 
 **Project partners:** Dagmar Abfalter (Cultural Management & Gender Studies,
